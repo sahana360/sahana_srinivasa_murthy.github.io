@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zoo Management System — Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --fg: #f0f0ec;
+  --gray: #888;
+  --border: #222;
+  --border2: #2a2a2a;
+  --bg: #0c0c0c;
+  --bg2: #0f0f0f;
+  --bg3: #111;
+  --teal: #2dd4b4;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--fg); font-family: 'Outfit', sans-serif; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.4rem 3rem;
+  background: rgba(12,12,12,0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-back { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); transition: color 0.2s; display: flex; align-items: center; gap: 0.5rem; }
+.nav-back:hover { color: var(--fg); }
+.nav-label { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--gray); }
+
+.project-hero { padding: 10rem 3rem 5rem; border-bottom: 1px solid var(--border); }
+.project-eyebrow { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 1.5rem; }
+.project-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 300; line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 3rem; }
+.project-title em { font-style: italic; color: #555; }
+.project-meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.meta-cell { padding: 1.5rem 0; border-right: 1px solid var(--border); }
+.meta-cell:not(:first-child) { padding-left: 2rem; }
+.meta-cell:last-child { border-right: none; }
+.meta-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.4rem; }
+.meta-value { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 400; line-height: 1.4; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 2.5rem; }
+.tag { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); border: 1px solid var(--border2); padding: 0.3rem 0.65rem; border-radius: 100px; }
+
+.content-section { padding: 5rem 3rem; border-bottom: 1px solid var(--border); }
+.content-section.alt { background: var(--bg2); }
+.section-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 3rem; }
+.section-label { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray); }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
+
+h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400; line-height: 1.15; margin-bottom: 1.5rem; }
+h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 0.75rem; }
+p { font-size: 0.92rem; color: #888; line-height: 1.8; margin-bottom: 1rem; }
+p:last-child { margin-bottom: 0; }
+
+.stat-card { border: 1px solid var(--border); padding: 2rem; }
+.stat-number { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; color: var(--fg); line-height: 1; margin-bottom: 0.5rem; }
+.stat-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); }
+
+/* SCHEMA TABLES */
+.schema-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+.schema-table { border: 1px solid var(--border); }
+.schema-header { background: var(--fg); padding: 0.75rem 1rem; }
+.schema-header-name { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; color: #111; }
+.schema-body { padding: 0.5rem 0; }
+.schema-field { display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 1rem; font-size: 11px; color: var(--gray); border-bottom: 1px solid var(--border2); }
+.schema-field:last-child { border-bottom: none; }
+.schema-pk { font-size: 9px; color: var(--teal); letter-spacing: 0.1em; }
+.schema-fk { font-size: 9px; color: #888; letter-spacing: 0.1em; }
+
+/* MODULE CARDS */
+.module-flow { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+.module-card { border: 1px solid var(--border); padding: 2rem; }
+.module-card:hover { border-color: #444; }
+.module-tag { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.75rem; }
+.module-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 400; margin-bottom: 0.75rem; }
+.module-desc { font-size: 0.85rem; color: #666; line-height: 1.7; }
+.module-features { margin-top: 1rem; }
+.module-feature { font-size: 11px; color: #555; padding: 0.25rem 0; border-bottom: 1px solid var(--border2); display: flex; gap: 0.5rem; }
+.module-feature:last-child { border-bottom: none; }
+.module-feature::before { content: '—'; color: #333; }
+
+/* TECH STACK */
+.tech-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); margin-top: 2rem; }
+.tech-col { padding: 1.5rem; border-right: 1px solid var(--border); }
+.tech-col:last-child { border-right: none; }
+.tech-col-title { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gray); margin-bottom: 1rem; }
+.tech-item { font-size: 0.85rem; color: var(--fg); padding: 0.3rem 0; border-bottom: 1px solid var(--border2); }
+.tech-item:last-child { border-bottom: none; }
+
+/* NORMALIZATION STEPS */
+.norm-steps { margin-top: 2rem; }
+.norm-step { display: grid; grid-template-columns: auto 1fr; gap: 2rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border2); align-items: start; }
+.norm-step:last-child { border-bottom: none; }
+.norm-label { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--teal); line-height: 1; min-width: 3rem; }
+.norm-content { }
+.norm-title { font-size: 0.9rem; color: var(--fg); font-weight: 500; margin-bottom: 0.3rem; }
+.norm-desc { font-size: 0.85rem; color: #666; line-height: 1.7; }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 1.5rem; }
+  .project-hero, .content-section { padding: 3rem 1.5rem; }
+  .project-hero { padding-top: 7rem; }
+  .project-meta-grid { grid-template-columns: 1fr 1fr; }
+  .two-col, .three-col { grid-template-columns: 1fr; gap: 2rem; }
+  .schema-grid { grid-template-columns: 1fr 1fr; }
+  .module-flow { grid-template-columns: 1fr; }
+  .tech-grid { grid-template-columns: 1fr 1fr; }
+  .tech-col { border-right: none; border-bottom: 1px solid var(--border); }
+  .tech-col:last-child { border-bottom: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-back">← Back to Portfolio</a>
+  <span class="nav-label">Project Detail</span>
+</nav>
+
+<!-- HERO -->
+<section class="project-hero">
+  <div class="project-eyebrow reveal">Mini Project · DBMS · Web Application · 2020–21</div>
+  <div class="project-title reveal">Zoo<br /><em>Management</em><br />System</div>
+  <div class="project-meta-grid reveal">
+    <div class="meta-cell">
+      <div class="meta-label">Institution</div>
+      <div class="meta-value">BNM Institute of Technology, Bengaluru</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-label">Year</div>
+      <div class="meta-value">2020 – 2021</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-label">Type</div>
+      <div class="meta-value">Full-Stack Web Application</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-label">Database</div>
+      <div class="meta-value">MySQL via XAMPP</div>
+    </div>
+  </div>
+  <div class="tag-row reveal">
+    <span class="tag">HTML / CSS</span>
+    <span class="tag">PHP</span>
+    <span class="tag">MySQL</span>
+    <span class="tag">DBMS</span>
+    <span class="tag">XAMPP</span>
+    <span class="tag">Apache</span>
+    <span class="tag">SQL Triggers</span>
+    <span class="tag">Stored Procedures</span>
+    <span class="tag">Normalization</span>
+    <span class="tag">ER Diagram</span>
+    <span class="tag">Visual Studio</span>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="content-section">
+  <div class="section-header reveal">
+    <span class="section-label">Overview</span>
+  </div>
+  <div class="two-col reveal">
+    <div>
+      <h2>Digitising zoo operations through a full-stack web portal</h2>
+    </div>
+    <div>
+      <p>Zoos have evolved from places of public entertainment to critical institutions for wildlife conservation. Managing the wealth of information about animals, staff, visitor records, and donations — historically done manually — is slow, error-prone, and vulnerable to physical data loss.</p>
+      <p>The Zoo Management System (ZMS) is a web application that automates this existing manual system using a relational database backend. It enables administrators to easily <strong style="color:var(--fg)">store, retrieve, update, and delete</strong> records about animals, staff assignments, visitor registrations, ticket purchases, and donations — all through a structured, access-controlled web interface.</p>
+      <p>Visitors can register, browse the animal gallery, and make donations. Admins have full dashboard control over all database tables via an authenticated portal.</p>
+    </div>
+  </div>
+
+  <div class="three-col reveal" style="margin-top:3rem;">
+    <div class="stat-card">
+      <div class="stat-number">6</div>
+      <div class="stat-label">Database Entities (Animal, Staff, Visitor, Payment, Ticket, Donation)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">2</div>
+      <div class="stat-label">User Roles (Admin + Visitor)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">3NF</div>
+      <div class="stat-label">Database Normalized to Third Normal Form</div>
+    </div>
+  </div>
+</section>
+
+<!-- DATABASE SCHEMA -->
+<section class="content-section alt">
+  <div class="section-header reveal">
+    <span class="section-label">Database Schema</span>
+  </div>
+  <p class="reveal" style="max-width:600px;">The schema was designed using ER-to-Relational mapping rules — covering regular entity mapping, 1:M, 1:1, and M:N binary relationship mapping — resulting in six normalized tables with clearly defined primary and foreign keys.</p>
+  <div class="schema-grid reveal">
+    <div class="schema-table">
+      <div class="schema-header"><div class="schema-header-name">ANIMAL</div></div>
+      <div class="schema-body">
+        <div class="schema-field"><span class="schema-pk">PK</span> animal_id</div>
+        <div class="schema-field">animal_name</div>
+        <div class="schema-field">description</div>
+        <div class="schema-field">cell_no</div>
+        <div class="schema-field">DateOfBirth</div>
+        <div class="schema-field">DateOfDeath</div>
+      </div>
+    </div>
+    <div class="schema-table">
+      <div class="schema-header"><div class="schema-header-name">STAFF</div></div>
+      <div class="schema-body">
+        <div class="schema-field"><span class="schema-pk">PK</span> staff_id</div>
+        <div class="schema-field">name</div>
+        <div class="schema-field">phone_no</div>
+        <div class="schema-field">age · salary · timings</div>
+        <div class="schema-field"><span class="schema-fk">FK</span> animal_id</div>
+        <div class="schema-field"><span class="schema-fk">FK</span> donation_id</div>
+      </div>
+    </div>
+    <div class="schema-table">
+      <div class="schema-header"><div class="schema-header-name">VISITOR</div></div>
+      <div class="schema-body">
+        <div class="schema-field"><span class="schema-pk">PK</span> visitor_id</div>
+        <div class="schema-field">username</div>
+        <div class="schema-field">email</div>
+        <div class="schema-field">password</div>
+      </div>
+    </div>
+    <div class="schema-table">
+      <div class="schema-header"><div class="schema-header-name">PAYMENT</div></div>
+      <div class="schema-body">
+        <div class="schema-field"><span class="schema-pk">PK</span> payment_id</div>
+        <div class="schema-field"><span class="schema-fk">FK</span> visitor_id</div>
+        <div class="schema-field">payby</div>
+        <div class="schema-field">date · time</div>
+      </div>
+    </div>
+    <div class="schema-table">
+      <div class="schema-header"><div class="schema-header-name">DONATION</div></div>
+      <div class="schema-body">
+        <div class="schema-field"><span class="schema-pk">PK</span> donation_id</div>
+        <div class="schema-field"><span class="schema-fk">FK</span> payment_id</div>
+        <div class="schema-field">username · email</div>
+        <div class="schema-field">phone_no · amount</div>
+      </div>
+    </div>
+    <div class="schema-table">
+      <div class="schema-header"><div class="schema-header-name">TICKET</div></div>
+      <div class="schema-body">
+        <div class="schema-field"><span class="schema-pk">PK</span> ticket_id</div>
+        <div class="schema-field"><span class="schema-fk">FK</span> payment_id</div>
+        <div class="schema-field"><span class="schema-fk">FK</span> visitor_id</div>
+        <div class="schema-field"><span class="schema-fk">FK</span> animal_id</div>
+        <div class="schema-field">price · date</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section class="content-section">
+  <div class="section-header reveal">
+    <span class="section-label">Application Modules</span>
+  </div>
+  <div class="module-flow reveal">
+    <div class="module-card">
+      <div class="module-tag">Visitor / User Module</div>
+      <div class="module-name">Public-Facing Portal</div>
+      <div class="module-desc">Visitors register and log in to access the web portal. Once authenticated, they can browse the animal gallery, view animal details, and make donations to support zoo operations.</div>
+      <div class="module-features">
+        <div class="module-feature">Register & Login with session management</div>
+        <div class="module-feature">Browse animal gallery with images</div>
+        <div class="module-feature">Submit donation form with payment details</div>
+        <div class="module-feature">View About and Contact pages</div>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-tag">Admin Module</div>
+      <div class="module-name">Admin Dashboard</div>
+      <div class="module-desc">Administrators log in through a separate protected interface to manage all database tables. The dashboard provides full CRUD operations — add, display, update, and search — for every entity in the system.</div>
+      <div class="module-features">
+        <div class="module-feature">Add / Edit / View Animal details with image upload</div>
+        <div class="module-feature">Manage Staff, Ticket, and Payment records</div>
+        <div class="module-feature">Search records by name or ID</div>
+        <div class="module-feature">View all Donation details and amounts</div>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-tag">Database Layer</div>
+      <div class="module-name">SQL Triggers & Stored Procedures</div>
+      <div class="module-desc">The database includes custom SQL triggers and stored procedures that automate operational logic and enforce data integrity without requiring application-level code.</div>
+      <div class="module-features">
+        <div class="module-feature">Trigger: animal_count — tracks living animal count on insert</div>
+        <div class="module-feature">Trigger: insert — logs donation records automatically on insert</div>
+        <div class="module-feature">Stored Procedure: salary>5000 — staff with high-value donations</div>
+        <div class="module-feature">Stored Procedure: avg_donation — computes donation average</div>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-tag">Database Connectivity</div>
+      <div class="module-name">PHP–MySQL Integration</div>
+      <div class="module-desc">The application uses PHP's mysqli extension to connect to a MySQL database hosted on a local XAMPP Apache server. All CRUD operations are implemented via parameterized queries following a 5-step connection lifecycle.</div>
+      <div class="module-features">
+        <div class="module-feature">Create connection → Select DB → Execute query</div>
+        <div class="module-feature">INSERT / UPDATE / SELECT / SEARCH queries</div>
+        <div class="module-feature">Image upload with extension validation & MD5 hashing</div>
+        <div class="module-feature">Session-based authentication for user and admin</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NORMALIZATION -->
+<section class="content-section alt">
+  <div class="section-header reveal">
+    <span class="section-label">Database Normalization</span>
+  </div>
+  <div class="two-col reveal">
+    <div>
+      <h2>Normalized to Third Normal Form to eliminate redundancy</h2>
+      <p>The database was systematically normalized through three normal forms to ensure minimal data redundancy, avoid update/insert/delete anomalies, and enforce clean relational structure.</p>
+    </div>
+    <div>
+      <div class="norm-steps">
+        <div class="norm-step">
+          <div class="norm-label">1NF</div>
+          <div class="norm-content">
+            <div class="norm-title">First Normal Form — Atomic Values</div>
+            <div class="norm-desc">Each table cell contains a single, atomic value and every record is unique. All fields store only one piece of information (e.g., visitor_id, username, email, password in the VISITOR table).</div>
+          </div>
+        </div>
+        <div class="norm-step">
+          <div class="norm-label">2NF</div>
+          <div class="norm-content">
+            <div class="norm-title">Second Normal Form — Full Functional Dependency</div>
+            <div class="norm-desc">All non-prime attributes are fully functionally dependent on the primary key. Tables with composite primary keys (e.g., TICKET linking payment_id, visitor_id, animal_id) were verified to ensure no partial dependencies exist.</div>
+          </div>
+        </div>
+        <div class="norm-step">
+          <div class="norm-label">3NF</div>
+          <div class="norm-content">
+            <div class="norm-title">Third Normal Form — No Transitive Dependencies</div>
+            <div class="norm-desc">No non-prime attribute is transitively dependent on the primary key. All non-key fields directly and exclusively describe the entity identified by their table's primary key — removing any indirect attribute dependencies.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section class="content-section">
+  <div class="section-header reveal">
+    <span class="section-label">Technology Stack</span>
+  </div>
+  <div class="tech-grid reveal">
+    <div class="tech-col">
+      <div class="tech-col-title">Frontend</div>
+      <div class="tech-item">HTML5</div>
+      <div class="tech-item">CSS3</div>
+      <div class="tech-item">Bootstrap (UI)</div>
+    </div>
+    <div class="tech-col">
+      <div class="tech-col-title">Backend</div>
+      <div class="tech-item">PHP (server-side)</div>
+      <div class="tech-item">Session Management</div>
+      <div class="tech-item">File Upload (image)</div>
+    </div>
+    <div class="tech-col">
+      <div class="tech-col-title">Database</div>
+      <div class="tech-item">MySQL / MariaDB</div>
+      <div class="tech-item">SQL Triggers</div>
+      <div class="tech-item">Stored Procedures</div>
+    </div>
+    <div class="tech-col">
+      <div class="tech-col-title">Infrastructure</div>
+      <div class="tech-item">XAMPP (Apache + MySQL)</div>
+      <div class="tech-item">Chrome Browser</div>
+      <div class="tech-item">Windows 10</div>
+    </div>
+  </div>
+</section>
+
+<footer style="border-top:1px solid var(--border); padding:2rem 3rem; display:flex; justify-content:space-between; align-items:center;">
+  <p style="font-size:11px; color:#555; letter-spacing:0.06em;">Zoo Management System</p>
+  <a href="index.html" class="nav-back">← Back to Portfolio</a>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

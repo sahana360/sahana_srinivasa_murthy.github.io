@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Water Level Detection Alarm — Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --fg: #f0f0ec;
+  --gray: #888;
+  --border: #222;
+  --border2: #2a2a2a;
+  --bg: #0c0c0c;
+  --bg2: #0f0f0f;
+  --bg3: #111;
+  --teal: #2dd4b4;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--fg); font-family: 'Outfit', sans-serif; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.4rem 3rem;
+  background: rgba(12,12,12,0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-back { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); transition: color 0.2s; display: flex; align-items: center; gap: 0.5rem; }
+.nav-back:hover { color: var(--fg); }
+.nav-label { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--gray); }
+
+.project-hero { padding: 10rem 3rem 5rem; border-bottom: 1px solid var(--border); }
+.project-eyebrow { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 1.5rem; }
+.project-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 300; line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 3rem; }
+.project-title em { font-style: italic; color: #555; }
+.project-meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.meta-cell { padding: 1.5rem 0; border-right: 1px solid var(--border); }
+.meta-cell:not(:first-child) { padding-left: 2rem; }
+.meta-cell:last-child { border-right: none; }
+.meta-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.4rem; }
+.meta-value { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 400; line-height: 1.4; }
+.tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 2.5rem; }
+.tag { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); border: 1px solid var(--border2); padding: 0.3rem 0.65rem; border-radius: 100px; }
+
+.content-section { padding: 5rem 3rem; border-bottom: 1px solid var(--border); }
+.content-section.alt { background: var(--bg2); }
+.section-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 3rem; }
+.section-label { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray); }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
+
+h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400; line-height: 1.15; margin-bottom: 1.5rem; }
+h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 0.75rem; }
+p { font-size: 0.92rem; color: #888; line-height: 1.8; margin-bottom: 1rem; }
+p:last-child { margin-bottom: 0; }
+
+.stat-card { border: 1px solid var(--border); padding: 2rem; }
+.stat-card:hover { border-color: #444; }
+.stat-number { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; color: var(--fg); line-height: 1; margin-bottom: 0.5rem; }
+.stat-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); }
+
+/* HARDWARE SPECS */
+.hardware-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border); margin-top: 2rem; }
+.hw-item { padding: 1.5rem 2rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.hw-item:nth-child(even) { border-right: none; }
+.hw-item:nth-last-child(-n+2) { border-bottom: none; }
+.hw-name { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.35rem; }
+.hw-value { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--fg); }
+
+/* FLOW DIAGRAM */
+.flow-diagram { display: flex; align-items: center; justify-content: center; gap: 0; margin-top: 2rem; flex-wrap: wrap; }
+.flow-node { border: 1px solid var(--border); padding: 1.25rem 1.5rem; text-align: center; min-width: 140px; }
+.flow-node.highlight { border-color: var(--teal); }
+.flow-node-label { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.3rem; }
+.flow-node-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--fg); }
+.flow-arrow { color: #333; font-size: 1.2rem; padding: 0 0.5rem; }
+
+/* APPLICATIONS */
+.app-list { margin-top: 2rem; }
+.app-item { display: flex; align-items: flex-start; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border2); }
+.app-item:last-child { border-bottom: none; }
+.app-num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--teal); line-height: 1; min-width: 2.5rem; }
+.app-text { }
+.app-title { font-size: 0.92rem; color: var(--fg); margin-bottom: 0.25rem; font-weight: 500; }
+.app-desc { font-size: 0.85rem; color: #666; line-height: 1.7; }
+
+/* BENEFITS */
+.benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); margin-top: 2rem; }
+.benefit { padding: 1.75rem 2rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.benefit:nth-child(3n) { border-right: none; }
+.benefit:nth-last-child(-n+3) { border-bottom: none; }
+.benefit-icon { font-size: 1.25rem; margin-bottom: 0.75rem; display: block; }
+.benefit-title { font-size: 0.88rem; color: var(--fg); margin-bottom: 0.35rem; font-weight: 500; }
+.benefit-desc { font-size: 0.82rem; color: #666; line-height: 1.6; }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 1.5rem; }
+  .project-hero, .content-section { padding: 3rem 1.5rem; }
+  .project-hero { padding-top: 7rem; }
+  .project-meta-grid { grid-template-columns: 1fr 1fr; }
+  .two-col, .three-col { grid-template-columns: 1fr; gap: 2rem; }
+  .hardware-grid { grid-template-columns: 1fr; }
+  .hw-item { border-right: none; }
+  .hw-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+  .hw-item:last-child { border-bottom: none; }
+  .benefits-grid { grid-template-columns: 1fr 1fr; }
+  .flow-diagram { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-back">← Back to Portfolio</a>
+  <span class="nav-label">Project Detail</span>
+</nav>
+
+<!-- HERO -->
+<section class="project-hero">
+  <div class="project-eyebrow reveal">IoT Project · Save Water Campaign · Arduino</div>
+  <div class="project-title reveal">Water Level<br /><em>Detection</em><br />Alarm</div>
+  <div class="project-meta-grid reveal">
+    <div class="meta-cell">
+      <div class="meta-label">Institution</div>
+      <div class="meta-value">BNM Institute of Technology, Bengaluru</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-label">Year</div>
+      <div class="meta-value">2020 – 2021</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-label">Platform</div>
+      <div class="meta-value">Arduino UNO</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-label">Domain</div>
+      <div class="meta-value">IoT · Embedded Systems</div>
+    </div>
+  </div>
+  <div class="tag-row reveal">
+    <span class="tag">Arduino UNO</span>
+    <span class="tag">Arduino IDE</span>
+    <span class="tag">IoT</span>
+    <span class="tag">Embedded Systems</span>
+    <span class="tag">LCD Display</span>
+    <span class="tag">Buzzer</span>
+    <span class="tag">Water Sensors</span>
+    <span class="tag">Project Planning</span>
+    <span class="tag">Teamwork</span>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="content-section">
+  <div class="section-header reveal">
+    <span class="section-label">Overview</span>
+  </div>
+  <div class="two-col reveal">
+    <div>
+      <h2>Smart water management through IoT threshold alerting</h2>
+    </div>
+    <div>
+      <p>Water tank overflow is a persistent and overlooked source of water wastage — particularly in tall buildings where the tank is elevated and difficult to monitor visually. Individuals, already managing professional and household responsibilities, cannot continuously watch water levels manually.</p>
+      <p>This project creates and deploys a water detection alarm system using the <strong style="color:var(--fg)">Arduino UNO microcontroller board</strong>. The system monitors water levels in overhead tanks and emits audible and visual alarms when the tank reaches capacity — automatically signalling overflow prevention in real time.</p>
+      <p>The device contributes to the global <strong style="color:var(--fg)">Save Water campaign</strong> by providing a low-cost, compact, easily installable solution that prevents overflow, reduces water wastage, and enables remote pump control.</p>
+    </div>
+  </div>
+
+  <div class="three-col reveal" style="margin-top:3rem;">
+    <div class="stat-card">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Water Level Thresholds (25%, 50%, 75%, Full)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">2</div>
+      <div class="stat-label">Output Modes (Audio Buzzer + LCD Display)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Use Cases — Buildings, Pools, Factories & More</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM STATEMENT -->
+<section class="content-section alt">
+  <div class="section-header reveal">
+    <span class="section-label">Problem Statement</span>
+  </div>
+  <div class="two-col reveal">
+    <div>
+      <h2>Tank overflow — a preventable waste problem</h2>
+      <p>Water tank overflow poses a common challenge in modern buildings, particularly where tanks are placed at height. Without continuous monitoring, tanks fill beyond capacity and overflow — wasting water resources and potentially causing structural damage through wall and roof seepage.</p>
+      <p>The absence of an automated alert mechanism means users either forget to switch off pumps or cannot tell when the tank has reached full capacity from a distance.</p>
+    </div>
+    <div>
+      <h3>Solution Approach</h3>
+      <p>The system uses water-level sensing probes placed at predetermined thresholds within the tank (25%, 50%, 75%, and full). Analog signals from sensors are read by the Arduino UNO microcontroller via its ADC (Analog-to-Digital Converter) pins.</p>
+      <p>When the water reaches full capacity, the microcontroller triggers: an <strong style="color:var(--fg)">audio buzzer alarm</strong> to alert the user and displays the fill percentage on an <strong style="color:var(--fg)">LCD screen</strong>. Additionally, the system supports automated pump shutoff when the full threshold is reached, preventing overflow without manual intervention.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEM ARCHITECTURE -->
+<section class="content-section">
+  <div class="section-header reveal">
+    <span class="section-label">System Architecture</span>
+  </div>
+  <p class="reveal" style="max-width:600px; margin-bottom:0;">The system follows a straightforward sensing → processing → output architecture built around the Arduino UNO as the central microcontroller.</p>
+  <div class="flow-diagram reveal">
+    <div class="flow-node">
+      <div class="flow-node-label">Input</div>
+      <div class="flow-node-name">Water Container<br />(with Sensors)</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-node-label">Power</div>
+      <div class="flow-node-name">Power Supply<br />(5V)</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node highlight">
+      <div class="flow-node-label">Processing</div>
+      <div class="flow-node-name">Arduino UNO<br />Microcontroller</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-node-label">Interface</div>
+      <div class="flow-node-name">Computer<br />(Arduino IDE)</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">
+      <div class="flow-node-label">Output</div>
+      <div class="flow-node-name">Buzzer + LCD<br />Display</div>
+    </div>
+  </div>
+
+  <!-- Hardware specs -->
+  <div class="reveal" style="margin-top:3rem;">
+    <h3>Hardware Components</h3>
+    <div class="hardware-grid">
+      <div class="hw-item">
+        <div class="hw-name">Microcontroller</div>
+        <div class="hw-value">Arduino UNO Board (Rev 3)</div>
+      </div>
+      <div class="hw-item">
+        <div class="hw-name">Display</div>
+        <div class="hw-value">LCD Display</div>
+      </div>
+      <div class="hw-item">
+        <div class="hw-name">Alert Output</div>
+        <div class="hw-value">Buzzer (Speaker)</div>
+      </div>
+      <div class="hw-item">
+        <div class="hw-name">Programming Interface</div>
+        <div class="hw-value">Computer + Arduino IDE</div>
+      </div>
+      <div class="hw-item">
+        <div class="hw-name">Input Unit</div>
+        <div class="hw-value">Water Container with Level Sensors</div>
+      </div>
+      <div class="hw-item">
+        <div class="hw-name">Power</div>
+        <div class="hw-value">5V DC Power Supply</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPLICATIONS -->
+<section class="content-section alt">
+  <div class="section-header reveal">
+    <span class="section-label">Applications</span>
+  </div>
+  <div class="two-col reveal">
+    <div>
+      <h2>Deployable across residential and industrial settings</h2>
+      <div class="app-list">
+        <div class="app-item">
+          <div class="app-num">01</div>
+          <div class="app-text">
+            <div class="app-title">Tall Buildings & High-Rise Structures</div>
+            <div class="app-desc">The primary application — where overhead tank placement makes visual monitoring impossible. The system provides real-time status without requiring the user to physically check the tank.</div>
+          </div>
+        </div>
+        <div class="app-item">
+          <div class="app-num">02</div>
+          <div class="app-text">
+            <div class="app-title">Automated Pump Control</div>
+            <div class="app-desc">The control panel can be programmed to automatically activate or deactivate a water pump when levels drop below or rise above defined thresholds, enabling fully autonomous water management.</div>
+          </div>
+        </div>
+        <div class="app-item">
+          <div class="app-num">03</div>
+          <div class="app-text">
+            <div class="app-title">Hotels, Pools & Factories</div>
+            <div class="app-desc">Commercial environments with large storage tanks or pools benefit from automated monitoring, reducing the need for manual rounds and preventing costly overflow events.</div>
+          </div>
+        </div>
+        <div class="app-item">
+          <div class="app-num">04</div>
+          <div class="app-text">
+            <div class="app-title">Fire Protection Systems</div>
+            <div class="app-desc">Fire suppression water storage must be maintained at sufficient levels at all times. The alarm system ensures maintenance teams are alerted when reserves drop below safe thresholds.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h2>Benefits</h2>
+      <div class="benefits-grid">
+        <div class="benefit">
+          <span class="benefit-icon">⚡</span>
+          <div class="benefit-title">Easy Installation</div>
+          <div class="benefit-desc">Minimal wiring and a compact circuit make deployment straightforward in existing infrastructure.</div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">🔧</span>
+          <div class="benefit-title">Low Maintenance</div>
+          <div class="benefit-desc">Solid-state electronics require minimal upkeep — no mechanical parts to wear.</div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">💰</span>
+          <div class="benefit-title">Cost Effective</div>
+          <div class="benefit-desc">Saves money through water and electricity conservation, with a low initial hardware cost.</div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">📐</span>
+          <div class="benefit-title">Compact Design</div>
+          <div class="benefit-desc">Small footprint ensures the system can fit in restricted spaces near tanks or pump houses.</div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">🏗️</span>
+          <div class="benefit-title">Prevents Damage</div>
+          <div class="benefit-desc">Eliminates wall and roof seepage caused by overflow, preserving building integrity.</div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">🎯</span>
+          <div class="benefit-title">Precise Indication</div>
+          <div class="benefit-desc">Provides accurate water level status across multiple thresholds, not just a binary full/empty signal.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="border-top:1px solid var(--border); padding:2rem 3rem; display:flex; justify-content:space-between; align-items:center;">
+  <p style="font-size:11px; color:#555; letter-spacing:0.06em;">Water Level Detection Alarm</p>
+  <a href="index.html" class="nav-back">← Back to Portfolio</a>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

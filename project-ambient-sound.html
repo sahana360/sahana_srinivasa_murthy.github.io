@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ambient Sound Detection for the Deaf — Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --fg: #f0f0ec;
+  --gray: #888;
+  --border: #222;
+  --border2: #2a2a2a;
+  --bg: #0c0c0c;
+  --bg2: #0f0f0f;
+  --bg3: #111;
+  --teal: #2dd4b4;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--fg); font-family: 'Outfit', sans-serif; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.4rem 3rem;
+  background: rgba(12,12,12,0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-back { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); transition: color 0.2s; display: flex; align-items: center; gap: 0.5rem; }
+.nav-back:hover { color: var(--fg); }
+.nav-label { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--gray); }
+
+/* HERO */
+.project-hero { padding: 10rem 3rem 5rem; border-bottom: 1px solid var(--border); }
+.project-eyebrow { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 1.5rem; }
+.project-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 300; line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 3rem; }
+.project-title em { font-style: italic; color: #555; }
+.project-meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.meta-cell { padding: 1.5rem 0; border-right: 1px solid var(--border); }
+.meta-cell:not(:first-child) { padding-left: 2rem; }
+.meta-cell:last-child { border-right: none; }
+.meta-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.4rem; }
+.meta-value { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 400; line-height: 1.4; }
+
+/* TAGS */
+.tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 2.5rem; }
+.tag { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); border: 1px solid var(--border2); padding: 0.3rem 0.65rem; border-radius: 100px; }
+
+/* CONTENT SECTIONS */
+.content-section { padding: 5rem 3rem; border-bottom: 1px solid var(--border); }
+.content-section.alt { background: var(--bg2); }
+.section-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 3rem; }
+.section-label { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray); }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
+
+h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400; line-height: 1.15; margin-bottom: 1.5rem; }
+h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 0.75rem; }
+p { font-size: 0.92rem; color: #888; line-height: 1.8; margin-bottom: 1rem; }
+p:last-child { margin-bottom: 0; }
+
+/* STAT CARDS */
+.stat-card { border: 1px solid var(--border); padding: 2rem; }
+.stat-card:hover { border-color: #444; }
+.stat-number { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; color: var(--fg); line-height: 1; margin-bottom: 0.5rem; }
+.stat-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); }
+
+/* PIPELINE */
+.pipeline { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0; border: 1px solid var(--border); margin-top: 2rem; }
+.pipeline-step { padding: 1.5rem 1rem; border-right: 1px solid var(--border); text-align: center; position: relative; }
+.pipeline-step:last-child { border-right: none; }
+.pipeline-num { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--teal); display: block; margin-bottom: 0.4rem; }
+.pipeline-name { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray); }
+
+/* MODEL TABLE */
+.model-table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; }
+.model-table th { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray); padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+.model-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border2); font-size: 0.88rem; color: #888; }
+.model-table tr.best td { color: var(--fg); }
+.model-table tr.best td:first-child { color: var(--teal); }
+.model-table td .acc-bar { height: 3px; background: var(--border2); border-radius: 2px; margin-top: 0.4rem; }
+.model-table td .acc-fill { height: 3px; background: var(--teal); border-radius: 2px; }
+
+/* ARCHITECTURE */
+.arch-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; }
+.arch-feature { padding: 1.5rem 0; border-bottom: 1px solid var(--border2); }
+.arch-feature:last-child { border-bottom: none; }
+.arch-feature-title { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg); margin-bottom: 0.5rem; }
+
+/* SYSTEM MODULES */
+.modules-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1px solid var(--border); margin-top: 2rem; }
+.module { padding: 2rem; border-right: 1px solid var(--border); }
+.module:last-child { border-right: none; }
+.module-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+.module-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 400; margin-bottom: 0.75rem; }
+.module-desc { font-size: 0.85rem; color: #666; line-height: 1.7; }
+
+/* SOUND CLASSES */
+.sound-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border: 1px solid var(--border); margin-top: 2rem; }
+.sound-item { padding: 1.25rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: center; }
+.sound-item:nth-child(5n) { border-right: none; }
+.sound-item:nth-last-child(-n+5) { border-bottom: none; }
+.sound-emoji { font-size: 1.5rem; display: block; margin-bottom: 0.4rem; }
+.sound-name { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); }
+
+/* PUBLICATION HIGHLIGHT */
+.publication-card { border: 1px solid var(--teal); padding: 2.5rem; margin-top: 2rem; position: relative; }
+.pub-badge { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
+.pub-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 0.75rem; line-height: 1.3; }
+.pub-journal { font-size: 12px; color: var(--gray); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* MOBILE */
+@media (max-width: 900px) {
+  nav { padding: 1.2rem 1.5rem; }
+  .project-hero, .content-section { padding: 3rem 1.5rem; }
+  .project-hero { padding-top: 7rem; }
+  .project-meta-grid { grid-template-columns: 1fr 1fr; }
+  .two-col, .three-col, .arch-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .pipeline { grid-template-columns: repeat(4, 1fr); }
+  .sound-grid { grid-template-columns: repeat(2, 1fr); }
+  .modules-grid { grid-template-columns: 1fr; }
+  .module { border-right: none; border-bottom: 1px solid var(--border); }
+  .module:last-child { border-bottom: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-back">← Back to Portfolio</a>
+  <span class="nav-label">Project Detail</span>
+</nav>
+
+<!-- HERO -->
+<section class="project-hero">
+  <div class="project-eyebrow reveal">Final Year Project · Published · AIRCC 2022</div>
+  <div class="project-title reveal">Ambient Sound<br /><em>Detection</em><br />for the Deaf</div>
+  <div class="project-meta-grid reveal">
+    <div class="meta-cell">
+      <div class="meta-label">Institution</div>
+      <div class="meta-value">BNM Institute of Technology, Bengaluru</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-label">Year</div>
+      <div class="meta-value">2021 – 2022</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-label">Model Used</div>
+      <div class="meta-value">ResNet50 (Transfer Learning)</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-label">Test Accuracy</div>
+      <div class="meta-value">100% (ResNet50)</div>
+    </div>
+  </div>
+  <div class="tag-row reveal">
+    <span class="tag">Deep Learning</span>
+    <span class="tag">CNN</span>
+    <span class="tag">ResNet50</span>
+    <span class="tag">TensorFlow Lite</span>
+    <span class="tag">Raspberry Pi 3</span>
+    <span class="tag">Firebase</span>
+    <span class="tag">Android Studio</span>
+    <span class="tag">Python</span>
+    <span class="tag">Log-Mel Spectrogram</span>
+    <span class="tag">STFT</span>
+    <span class="tag">Flask REST API</span>
+    <span class="tag">PythonAnywhere</span>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="content-section">
+  <div class="section-header reveal">
+    <span class="section-label">Overview</span>
+  </div>
+  <div class="two-col reveal">
+    <div>
+      <h2>Helping the hearing-impaired connect with their environment</h2>
+    </div>
+    <div>
+      <p>According to the most recent Indian census, 63 million people suffer from significant auditory loss. People with Hearing Impairment (PWHI) encounter difficulties in their daily lives even in domestic environments — unable to hear sounds that are essential for carrying out daily routines or recognizing potential dangers.</p>
+      <p>This project detects and classifies essential sounds in a user's ambiance using a Deep Learning model, sending notifications to their smartphones via a mobile application. The system runs in real time using a Raspberry Pi 3 with a USB microphone, communicating with a cloud-hosted classification model.</p>
+      <p>The project was awarded <strong style="color:var(--fg)">Best Project</strong> at BNM Institute of Technology and subsequently published in the International Journal of Ambient Systems and Applications (AIRCC, September 2022).</p>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="three-col reveal" style="margin-top:3rem;">
+    <div class="stat-card">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">ResNet50 Test Accuracy</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">10</div>
+      <div class="stat-label">Sound Classes Classified</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">6</div>
+      <div class="stat-label">CNN Architectures Evaluated</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOUND CLASSES -->
+<section class="content-section alt">
+  <div class="section-header reveal">
+    <span class="section-label">Classified Sound Categories</span>
+  </div>
+  <div class="reveal">
+    <p style="max-width:600px;">The model was trained to recognize ten ambient sounds covering both domestic safety cues and emergency indicators relevant to PWHI users in home and workplace settings.</p>
+  </div>
+  <div class="sound-grid reveal">
+    <div class="sound-item"><span class="sound-emoji">👶</span><span class="sound-name">Baby Crying</span></div>
+    <div class="sound-item"><span class="sound-emoji">🐕</span><span class="sound-name">Dog Bark</span></div>
+    <div class="sound-item"><span class="sound-emoji">😷</span><span class="sound-name">Cough</span></div>
+    <div class="sound-item"><span class="sound-emoji">🍽️</span><span class="sound-name">Dishes & Pans</span></div>
+    <div class="sound-item"><span class="sound-emoji">🔔</span><span class="sound-name">Doorbell</span></div>
+    <div class="sound-item"><span class="sound-emoji">🔥</span><span class="sound-name">Fire Alarm</span></div>
+    <div class="sound-item"><span class="sound-emoji">💨</span><span class="sound-name">Smoke Detector</span></div>
+    <div class="sound-item"><span class="sound-emoji">🤧</span><span class="sound-name">Sneeze</span></div>
+    <div class="sound-item"><span class="sound-emoji">⛈️</span><span class="sound-name">Thunder</span></div>
+    <div class="sound-item"><span class="sound-emoji">💧</span><span class="sound-name">Water</span></div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="content-section">
+  <div class="section-header reveal">
+    <span class="section-label">Deep Learning Pipeline</span>
+  </div>
+  <p class="reveal" style="max-width:600px; margin-bottom:0;">Audio data goes through a multi-stage pipeline from raw collection to mobile notification — each step carefully designed to handle both clean and noisy real-world conditions.</p>
+  <div class="pipeline reveal">
+    <div class="pipeline-step"><span class="pipeline-num">01</span><span class="pipeline-name">Dataset Acquisition</span></div>
+    <div class="pipeline-step"><span class="pipeline-num">02</span><span class="pipeline-name">Data Augmentation</span></div>
+    <div class="pipeline-step"><span class="pipeline-num">03</span><span class="pipeline-name">STFT Conversion</span></div>
+    <div class="pipeline-step"><span class="pipeline-num">04</span><span class="pipeline-name">Feature Extraction</span></div>
+    <div class="pipeline-step"><span class="pipeline-num">05</span><span class="pipeline-name">Model Building</span></div>
+    <div class="pipeline-step"><span class="pipeline-num">06</span><span class="pipeline-name">Training & Testing</span></div>
+    <div class="pipeline-step"><span class="pipeline-num">07</span><span class="pipeline-name">TF Lite Deploy</span></div>
+  </div>
+
+  <div class="two-col reveal" style="margin-top:3rem;">
+    <div>
+      <h3>Dataset Sources</h3>
+      <p>Training data was sourced from two repositories: <strong style="color:var(--fg)">Google AudioSet</strong> — a large-scale collection of labeled 10-second audio clips containing hundreds of noisy samples per class, and <strong style="color:var(--fg)">FreeSound</strong> — providing clean, high-clarity audio clips of approximately 10 seconds each.</p>
+      <p>Data augmentation was applied to the clean dataset using time shift, pitch shift, and time stretch techniques via the Audiomentations and Librosa libraries to increase training diversity and robustness.</p>
+    </div>
+    <div>
+      <h3>Spectrogram Processing</h3>
+      <p>Raw WAV audio files are pre-processed using <strong style="color:var(--fg)">Short-Time Fourier Transform (STFT)</strong>, which captures time-localized frequency information — outperforming standard FFT for non-stationary audio signals.</p>
+      <p><strong style="color:var(--fg)">Log-Mel Spectrograms</strong> are then computed from the STFT output. This logarithmic mel-scale representation aligns with human auditory perception and serves as the visual input fed into the CNN architecture at a resolution of 224×224 pixels.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MODEL COMPARISON -->
+<section class="content-section alt">
+  <div class="section-header reveal">
+    <span class="section-label">Model Comparison</span>
+  </div>
+  <div class="two-col reveal">
+    <div>
+      <h2>Six architectures evaluated. ResNet50 chosen.</h2>
+      <p>Six pre-trained CNN architectures — originally trained on ImageNet — were fine-tuned on the spectrogram dataset using transfer learning. All models were trained for 15 epochs with the Adam optimizer (lr=0.001) and an 80:10:10 train/val/test split.</p>
+      <p>ResNet50 and Xception both achieved 100% test accuracy. ResNet50 was selected for deployment due to its significantly lower memory footprint, faster inference time, and easier integration with TensorFlow Lite for cloud hosting.</p>
+    </div>
+    <div>
+      <table class="model-table">
+        <thead>
+          <tr><th>Architecture</th><th>Accuracy</th><th>F1 Score</th></tr>
+        </thead>
+        <tbody>
+          <tr class="best"><td>ResNet50 ✦</td><td>100%<div class="acc-bar"><div class="acc-fill" style="width:100%"></div></div></td><td>1.00</td></tr>
+          <tr class="best"><td>Xception</td><td>100%<div class="acc-bar"><div class="acc-fill" style="width:100%"></div></div></td><td>1.00</td></tr>
+          <tr><td>MobileNet</td><td>90.2%<div class="acc-bar"><div class="acc-fill" style="width:90%"></div></div></td><td>0.892</td></tr>
+          <tr><td>InceptionResNetV2</td><td>71.9%<div class="acc-bar"><div class="acc-fill" style="width:72%"></div></div></td><td>0.712</td></tr>
+          <tr><td>InceptionV3</td><td>59.5%<div class="acc-bar"><div class="acc-fill" style="width:60%"></div></div></td><td>0.571</td></tr>
+          <tr><td>VGG16</td><td>56.3%<div class="acc-bar"><div class="acc-fill" style="width:56%"></div></div></td><td>0.536</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- RESNET ARCHITECTURE -->
+<section class="content-section">
+  <div class="section-header reveal">
+    <span class="section-label">ResNet50 Architecture</span>
+  </div>
+  <div class="arch-grid reveal">
+    <div>
+      <h2>Why ResNet50 works</h2>
+      <div class="arch-feature">
+        <div class="arch-feature-title">Skip Connections</div>
+        <p>Skip connections feed the output of one layer directly to layers further down the network — allowing each layer's output to theoretically depend on all previous layers, not just the preceding one.</p>
+      </div>
+      <div class="arch-feature">
+        <div class="arch-feature-title">Vanishing Gradient Solution</div>
+        <p>Identity connections protect the network from the vanishing gradient problem during backpropagation, ensuring all 50 layers learn effectively and accuracy does not saturate prematurely.</p>
+      </div>
+      <div class="arch-feature">
+        <div class="arch-feature-title">Bottleneck Design</div>
+        <p>Each residual block uses 1×1, 3×3, 1×1 convolution stacks — the 1×1 layers reduce then restore dimensions, making the 3×3 layer a computational bottleneck that improves efficiency without loss in performance.</p>
+      </div>
+      <div class="arch-feature">
+        <div class="arch-feature-title">TF Lite Compression</div>
+        <p>The trained ResNet50 model was compressed to TensorFlow Lite format, enabling lightweight deployment on the PythonAnywhere cloud server for real-time inference.</p>
+      </div>
+    </div>
+    <div>
+      <h3>Training Parameters</h3>
+      <table class="model-table" style="margin-top:0;">
+        <tr><th>Parameter</th><th>Value</th></tr>
+        <tr><td>Learning Rate</td><td>0.001</td></tr>
+        <tr><td>Optimizer</td><td>Adam (SGD)</td></tr>
+        <tr><td>Epochs</td><td>15</td></tr>
+        <tr><td>Spectrogram Size</td><td>224 × 224 px</td></tr>
+        <tr><td>Dataset Split</td><td>80 / 10 / 10 %</td></tr>
+        <tr><td>Samples per Class (train)</td><td>~500</td></tr>
+        <tr><td>Pre-training Dataset</td><td>ImageNet</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEM MODULES -->
+<section class="content-section alt">
+  <div class="section-header reveal">
+    <span class="section-label">System Architecture — Three Modules</span>
+  </div>
+  <p class="reveal" style="max-width:600px;">The system is divided into three interconnected modules that handle data collection, classification, and user notification respectively.</p>
+  <div class="modules-grid reveal">
+    <div class="module">
+      <div class="module-icon">📡</div>
+      <div class="module-name">IoT — Sound Collection</div>
+      <div class="module-desc">A <strong>Raspberry Pi 3</strong> with a USB microphone records 5-second ambient audio clips at 48,000 Hz in WAV format using a headless SSH setup via ALSA / arecord. Audio is uploaded to <strong>Firebase Storage</strong> over Wi-Fi using the pyrebase library, making it available for the server to process on demand.</div>
+    </div>
+    <div class="module">
+      <div class="module-icon">☁️</div>
+      <div class="module-name">Server — Classification</div>
+      <div class="module-desc">A <strong>Flask REST API</strong> hosted on <strong>PythonAnywhere</strong> handles incoming GET requests from the mobile app every 10 seconds. On each call, it fetches audio from Firebase, runs STFT → Log-Mel spectrogram pre-processing with Librosa, feeds the result into the <strong>ResNet50 TF Lite model</strong>, and returns the classification result in JSON format.</div>
+    </div>
+    <div class="module">
+      <div class="module-icon">📱</div>
+      <div class="module-name">Android App — Notification</div>
+      <div class="module-desc">Built in <strong>Android Studio (Java)</strong>, the app polls the server every 10 seconds using the Volley library. When a sound is detected, it displays a dynamic card with English text and a pictorial icon, and alerts the user via <strong>vibration or torch light</strong>. Users choose their preferred notification mode, and duplicate sounds are suppressed until dismissed.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATION -->
+<section class="content-section">
+  <div class="section-header reveal">
+    <span class="section-label">Publication & Recognition</span>
+  </div>
+  <div class="two-col reveal">
+    <div class="publication-card">
+      <div class="pub-badge">📄 Published Research</div>
+      <div class="pub-title">Smart Sound System Applied for Extensive Care of People with Hearing Impairment</div>
+      <div class="pub-journal">International Journal of Ambient Systems and Applications · AIRCC · September 2022</div>
+    </div>
+    <div class="publication-card" style="border-color: #f0f0ec;">
+      <div class="pub-badge" style="color:var(--fg);">🏆 Best Project Award</div>
+      <div class="pub-title">Best Final Year Project — Ambient Sound Recognition for the Deaf</div>
+      <div class="pub-journal">BNM Institute of Technology, Bengaluru · July 2022</div>
+    </div>
+  </div>
+</section>
+
+<footer style="border-top:1px solid var(--border); padding:2rem 3rem; display:flex; justify-content:space-between; align-items:center;">
+  <p style="font-size:11px; color:#555; letter-spacing:0.06em;">Ambient Sound Detection for the Deaf</p>
+  <a href="index.html" class="nav-back">← Back to Portfolio</a>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
